@@ -1,7 +1,6 @@
-// const express = require("express");
-// const https = require("https");
 const axios = require("axios");
 
+const myArgs = process.argv.slice(2);
 axios
     .get("https://api.publicapis.org/entries")
     .then((response) => {
@@ -13,50 +12,18 @@ axios
             const api1 = a.API.toUpperCase();
             const api2 = b.API.toUpperCase();
             if (api1 < api2) {
-                return -1;
+                return 1;
             }
             if (api1 > api2) {
-                return 1;
+                return -1;
             }
             return 0;
         });
-        console.log(fetchedData);
+
+        let result = [];
+        result = fetchedData.filter((item) => {
+            return item.Category === myArgs[0];
+        });
+        console.log(result.length === 0 ? "No results" : result.slice(0, myArgs[1]));
     })
     .catch((err) => console.log(err));
-
-// const app = express();
-// app.use(express.urlencoded({ extended: true }));
-
-// app.get("/", function (req, res) {
-//     res.sendFile(__dirname + "/index.html");
-// });
-
-// app.post("/", function (req, res) {
-//     axios
-//         .get("https://api.publicapis.org/entries")
-//         .then((response) => {
-//             let fetchedData = [];
-//             response.data.entries.map((item) => {
-//                 fetchedData.push(item);
-//             });
-//             res.write("<h1>" + fetchedData + "</h1>");
-//         })
-//         .catch((err) => console.log(err));
-// });
-
-// app.get("/", function (req, res) {
-//     axios
-//         .get("https://api.publicapis.org/entries")
-//         .then((response) => {
-//             let fetchedData = [];
-//             response.data.entries.map((item) => {
-//                 fetchedData.push(item);
-//             });
-//             res.write("<h1>" + fetchedData + "</h1>");
-//         })
-//         .catch((err) => console.log(err));
-// });
-
-// app.listen(3000, function () {
-//     console.log("Server is running on port 3000");
-// });
